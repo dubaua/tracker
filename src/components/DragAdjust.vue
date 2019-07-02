@@ -1,19 +1,19 @@
 <template lang="pug">
-  .draginput(
+  .drag-adjust(
     @mousedown="supposeAdjastment",
     @touchstart="supposeAdjastment",
     @mouseup="clear",
   )
-    .draginput__overlay(
+    .drag-adjust__overlay(
       v-if="isAdjusting",
       @mousemove="adjust",
       @mouseup="submit",
       @mouseleave="submit",
     )
-      .draginput__number {{temporaryValue}}
-      .draginput__circle.draginput__center(:style="circleStyle(3)")
-      .draginput__circle.draginput__fader(:style="circleStyle(faderRadius)")
-      .draginput__circle.draginput__limiter(:style="circleStyle(limiterRadius)")
+      .drag-adjust__number {{temporaryValue}}
+      .drag-adjust__circle.drag-adjust__center(:style="circleStyle(3)")
+      .drag-adjust__circle.drag-adjust__fader(:style="circleStyle(faderRadius)")
+      .drag-adjust__circle.drag-adjust__limiter(:style="circleStyle(limiterRadius)")
     slot
       | Please, paste input here
 </template>
@@ -25,7 +25,7 @@ const ADJUST_DELAY = 150;
 const LIMITER_MARGIN = 32;
 
 export default {
-  name: 'DragInput',
+  name: 'drag-adjust',
   props: {
     value: {
       default: 0,
@@ -185,10 +185,7 @@ export default {
 <style lang="scss">
 $primary-blue: #409eff;
 
-.draginput {
-  display: inline-block;
-  max-width: 48px;
-
+.drag-adjust {
   &__overlay {
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
