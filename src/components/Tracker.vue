@@ -1,48 +1,41 @@
-<template>
-  <table class="tracker">
-    <thead>
-      <tr>
-        <th class="tracker__cell tracker__cell--head">Name</th>
-        <th
-          class="tracker__cell tracker__cell--head"
-          v-for="(property, key) in getDefaults"
-          :key="'head'+key"
+<template lang="html">
+<table class="tracker">
+  <thead>
+    <tr>
+      <th class="tracker__cell tracker__cell--head">Name</th>
+      <th class="tracker__cell tracker__cell--head" v-for="(property, key) in getDefaults" :key="'head'+key">
+        {{ property.label }}
+        <div class="tracker__finger-icon">
+          <Icon glyph="fingerprint"></Icon>
+        </div>
+      </th>
+      <th class="tracker__cell tracker__cell--head">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="combatant in getOrderedByInitiative" :key="combatant.id">
+      <td class="tracker__cell">{{ combatant.name }}</td>
+      <td class="tracker__cell tracker__cell--compact" v-for="(property, key) in getDefaults" :key="'cell'+key">
+        <DragAdjust
+          class="tracker__finger"
+          :value="combatant[key]"
+          :min="property.min"
+          :max="property.max"
+          @input="set($event, combatant.id, key)"
         >
-          {{property.label}}
-          <div class="tracker__finger-icon">
-            <Icon glyph="fingerprint"></Icon>
-          </div>
-        </th>
-        <th class="tracker__cell tracker__cell--head">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="combatant in getOrderedByInitiative" :key="combatant.id">
-        <td class="tracker__cell">{{combatant.name}}</td>
-        <td
-          class="tracker__cell tracker__cell--compact"
-          v-for="(property, key) in getDefaults"
-          :key="'cell'+key"
-        >
-          <DragAdjust
-            class="tracker__finger"
+          <input
+            class="tracker__input"
+            :class="{'tracker__input--negative': combatant[key] < 0}"
             :value="combatant[key]"
-            :min="property.min"
-            :max="property.max"
-            @input="set($event, combatant.id, key)"
-          >
-            <input
-              class="tracker__input"
-              :class="{'tracker__input--negative': combatant[key] < 0}"
-              :value="combatant[key]"
-              @change="set($event, combatant.id, key)"
-            >
-          </DragAdjust>
-        </td>
-        <td class="tracker__cell">Actin</td>
-      </tr>
-    </tbody>
-  </table>
+            @change="set($event, combatant.id, key)"
+          />
+        </DragAdjust>
+      </td>
+      <td class="tracker__cell">Actin</td>
+    </tr>
+  </tbody>
+</table>
+
 </template>
 
 <script>
