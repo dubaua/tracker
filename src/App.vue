@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <Tracker/>
-    <input v-model="nextName" placeholder="Name">
-    <button @click="add">New creature</button>
+    <Tracker />
+    <form @submit.prevent="add">
+      <input v-model="nextName" placeholder="Name" />
+      <button @click="add">New creature</button>
+    </form>
   </div>
 </template>
 

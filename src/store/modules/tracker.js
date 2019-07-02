@@ -10,7 +10,7 @@ const DEFAULTS = {
   },
   hp: {
     initial: 25,
-    min: 1,
+    min: 0,
     max: 200,
     label: 'HP',
   },
@@ -85,6 +85,11 @@ const mutations = {
   },
   removeCombatant(state, id) {
     Vue.delete(state, id);
+  },
+  damageCombatant(state, {id, amount}) {
+    const hp = state[id].hp;
+    const nextHp  = hp < amount ? 0 : hp - amount;
+    Vue.set(state[id], 'hp', nextHp);
   },
 };
 

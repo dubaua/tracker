@@ -12,7 +12,7 @@
       @mouseup="submit"
       @mouseleave="submit"
     >
-      <div class="drag-adjust__number">{{temporaryValue}}</div>
+      <div class="drag-adjust__number">{{ temporaryValue }}</div>
       <div class="drag-adjust__circle drag-adjust__center" :style="circleStyle(3)"></div>
       <div class="drag-adjust__circle drag-adjust__fader" :style="circleStyle(faderRadius)"></div>
       <div class="drag-adjust__circle drag-adjust__limiter" :style="circleStyle(limiterRadius)"></div>
@@ -40,7 +40,7 @@ export default {
       type: Number
     },
     max: {
-      default: 100,
+      default: 50,
       type: Number
     },
     disabled: {

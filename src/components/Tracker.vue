@@ -1,41 +1,76 @@
-<template lang="html">
-<table class="tracker">
-  <thead>
-    <tr>
-      <th class="tracker__cell tracker__cell--head">Name</th>
-      <th class="tracker__cell tracker__cell--head" v-for="(property, key) in getDefaults" :key="'head'+key">
-        {{ property.label }}
-        <div class="tracker__finger-icon">
-          <Icon glyph="fingerprint"></Icon>
-        </div>
-      </th>
-      <th class="tracker__cell tracker__cell--head">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="combatant in getOrderedByInitiative" :key="combatant.id">
-      <td class="tracker__cell">{{ combatant.name }}</td>
-      <td class="tracker__cell tracker__cell--compact" v-for="(property, key) in getDefaults" :key="'cell'+key">
-        <DragAdjust
-          class="tracker__finger"
-          :value="combatant[key]"
-          :min="property.min"
-          :max="property.max"
-          @input="set($event, combatant.id, key)"
+<template>
+  <table class="tracker">
+    <thead>
+      <tr>
+        <th class="tracker__cell tracker__cell--head">Name</th>
+        <th
+          class="tracker__cell tracker__cell--head"
+          v-for="(property, key) in getDefaults"
+          :key="'head' + key"
         >
-          <input
-            class="tracker__input"
-            :class="{'tracker__input--negative': combatant[key] < 0}"
+          {{ property.label }}
+          <div class="tracker__finger-icon">
+            <Icon glyph="fingerprint"></Icon>
+          </div>
+        </th>
+        <th class="tracker__cell tracker__cell--head">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="combatant in getOrderedByInitiative" :key="combatant.id">
+        <td class="tracker__cell">{{ combatant.name }}</td>
+        <td
+          class="tracker__cell tracker__cell--compact"
+          v-for="(property, key) in getDefaults"
+          :key="'cell' + key"
+        >
+          <DragAdjust
+            class="tracker__finger"
             :value="combatant[key]"
-            @change="set($event, combatant.id, key)"
-          />
-        </DragAdjust>
-      </td>
-      <td class="tracker__cell">Actin</td>
-    </tr>
-  </tbody>
-</table>
-
+            :min="property.min"
+            :max="property.max"
+            @input="set($event, combatant.id, key)"
+          >
+            <input
+              class="tracker__input"
+              :class="{ 'tracker__input--negative': combatant[key] < 0 }"
+              :value="combatant[key]"
+              @change="set($event, combatant.id, key)"
+            />
+          </DragAdjust>
+        </td>
+        <td class="tracker__cell">
+          <DragAdjust
+            class="tracker__finger tracker__finger--inline"
+            :value="damageAmount"
+            @input="damage($event, combatant.id)"
+          >
+            Damage
+            <!-- <input
+              class="tracker__input"
+              :class="{ 'tracker__input--negative': combatant[key] < 0 }"
+              :value="combatant[key]"
+              @change="set($event, combatant.id, key)"
+            />-->
+          </DragAdjust>
+          <DragAdjust
+            class="tracker__finger tracker__finger--inline"
+            :value="healAmount"
+            @input="heal($event, combatant.id)"
+          >
+            Heal
+            <!-- <input
+              class="tracker__input"
+              :class="{ 'tracker__input--negative': combatant[key] < 0 }"
+              :value="combatant[key]"
+              @change="set($event, combatant.id, key)"
+            />-->
+          </DragAdjust>
+          <button @click="removeCombatant(combatant.id)">&times;</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
@@ -49,16 +84,34 @@ export default {
     DragAdjust,
     Icon
   },
+  data() {
+    return {
+      damageAmount: 0,
+      healAmount: 0
+    };
+  },
   computed: {
     ...mapGetters(["getOrderedByInitiative", "getDefaults"])
   },
   methods: {
-    ...mapMutations(["setCombatant"]),
+    ...mapMutations(["setCombatant", "removeCombatant", "damageCombatant"]),
     set(event, id, key) {
       this.setCombatant({
         id,
         key,
         value: typeof event === "number" ? event : Number(event.target.value)
+      });
+    },
+    damage(event, id) {
+      this.damageCombatant({
+        id,
+        amount: typeof event === "number" ? event : Number(event.target.value)
+      });
+    },
+    heal(event, id) {
+      this.damageCombatant({
+        id,
+        amount: typeof event === "number" ? -event : -Number(event.target.value)
       });
     }
   }
@@ -81,7 +134,7 @@ export default {
     padding-left: $padding-x + $minus-width;
     padding-right: $padding-x;
     &--head {
-      font: 600 18px/18px "Laila", serif;
+      font: 600 18px/18px "Anonymous Pro", serif;
       letter-spacing: -0.03em;
       text-align: left;
       color: $color-primary;
@@ -92,9 +145,12 @@ export default {
   }
   &__finger {
     max-width: 4em;
+    &--inline {
+      display: inline-block;
+    }
   }
   &__input {
-    font: 600 18px/18px "Laila", serif;
+    font: 600 18px/18px "Anonymous Pro", serif;
     max-width: 100%;
     box-sizing: border-box;
     padding-top: $padding-y;
