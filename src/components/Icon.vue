@@ -1,5 +1,5 @@
 <template>
-  <svg :width="width" :height="height" focusable="false" class="icon">
+  <svg focusable="false" class="icon">
     <use :xlink:href="xhref"></use>
   </svg>
 </template>
@@ -11,14 +11,6 @@ export default {
     glyph: {
       type: String,
       required: true
-    },
-    width: {
-      type: Number,
-      required: false
-    },
-    height: {
-      type: Number,
-      required: false
     }
   },
   computed: {
