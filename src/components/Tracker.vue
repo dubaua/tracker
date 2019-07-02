@@ -40,6 +40,7 @@ export default {
 
 <style lang="scss">
 .tracker {
+  font-family: 'Laila', serif;
   input {
     font-family: inherit;
     max-width: 100%;
