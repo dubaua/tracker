@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
-import combatants from './modules/combatants';
+import tracker from './modules/tracker.js';
 
 Vue.use(Vuex);
 
@@ -14,7 +14,7 @@ const vuexPersist = new VuexPersistence({
 
 const store = new Vuex.Store({
   modules: {
-    combatants,
+    tracker,
   },
   strict: debug,
   plugins: [vuexPersist.plugin],

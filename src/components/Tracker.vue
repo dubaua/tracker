@@ -1,39 +1,49 @@
 <template>
-  <table>
+  <table class="tracker">
     <thead>
       <tr>
-        <th>initiative</th>
         <th>name</th>
-        <th>hp</th>
-        <th>ac</th>
-        <th>STR</th>
-        <th>DEX</th>
-        <th>CON</th>
-        <th>INT</th>
-        <th>WIS</th>
-        <th>CHA</th>
+        <th v-for="(property, key) in getDefaults" :key="'head'+key">{{key}}</th>
       </tr>
     </thead>
     <tbody>
-      <combatant v-for="combatant in getOrderedByInitiative" :key="combatant.id" :combatant="combatant"></combatant>
+      <tr v-for="combatant in getOrderedByInitiative" :key="combatant.id">
+        <td>{{combatant.name}}</td>
+        <td v-for="(property, key) in getDefaults" :key="'cell'+key">
+          <Finger
+            :value="combatant[key]"
+            :id="combatant.id"
+            :property="key"
+            :min="property.min"
+            :max="property.max"
+          ></Finger>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-import Combatant from "./Combatant.vue";
+import Finger from "./Finger.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Tracker",
   components: {
-    Combatant
+    Finger
   },
   computed: {
-    ...mapGetters(['getOrderedByInitiative']),
-  },
+    ...mapGetters(["getOrderedByInitiative", "getDefaults"])
+  }
 };
 </script>
 
-<style>
+<style lang="scss">
+.tracker {
+  input {
+    font-family: inherit;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
 </style>
