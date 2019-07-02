@@ -2,49 +2,129 @@
   <table class="tracker">
     <thead>
       <tr>
-        <th>name</th>
-        <th v-for="(property, key) in getDefaults" :key="'head'+key">{{key}}</th>
+        <th class="tracker__cell tracker__cell--head">Name</th>
+        <th
+          class="tracker__cell tracker__cell--head"
+          v-for="(property, key) in getDefaults"
+          :key="'head'+key"
+        >
+          {{key}}
+          <div class="tracker__finger-icon">
+            <Icon glyph="fingerprint"></Icon>
+          </div>
+        </th>
+        <th class="tracker__cell tracker__cell--head">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="combatant in getOrderedByInitiative" :key="combatant.id">
-        <td>{{combatant.name}}</td>
-        <td v-for="(property, key) in getDefaults" :key="'cell'+key">
-          <Finger
+        <td class="tracker__cell">{{combatant.name}}</td>
+        <td
+          class="tracker__cell tracker__cell--compact"
+          v-for="(property, key) in getDefaults"
+          :key="'cell'+key"
+        >
+          <DragAdjust
+            class="tracker__finger"
             :value="combatant[key]"
-            :id="combatant.id"
-            :property="key"
             :min="property.min"
             :max="property.max"
-          ></Finger>
+            @input="set($event, combatant.id, key)"
+          >
+            <input
+              class="tracker__input"
+              :class="{'tracker__input--negative': combatant[key] < 0}"
+              :value="combatant[key]"
+              @change="set($event, combatant.id, key)"
+            >
+          </DragAdjust>
         </td>
+        <td class="tracker__cell">Actin</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-import Finger from "./Finger.vue";
-import { mapGetters } from "vuex";
+import DragAdjust from "./DragAdjust.vue";
+import Icon from "./Icon.vue";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Tracker",
   components: {
-    Finger
+    DragAdjust,
+    Icon
   },
   computed: {
     ...mapGetters(["getOrderedByInitiative", "getDefaults"])
+  },
+  methods: {
+    ...mapMutations(["setCombatant"]),
+    set(event, id, key) {
+      this.setCombatant({
+        id,
+        key,
+        value: typeof event === "number" ? event : Number(event.target.value)
+      });
+    }
   }
 };
 </script>
 
 <style lang="scss">
 .tracker {
-  font-family: 'Laila', serif;
-  input {
-    font-family: inherit;
+  $color-primary: #a11010;
+  $padding-x: 0.38em;
+  $padding-y: 0.23em;
+  $minus-width: 0.55em;
+
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  &__cell {
+    padding-top: $padding-y;
+    padding-bottom: $padding-y;
+    padding-left: $padding-x + $minus-width;
+    padding-right: $padding-x;
+    &--head {
+      font: 600 18px/18px "Laila", serif;
+      letter-spacing: -0.03em;
+      text-align: left;
+      color: $color-primary;
+    }
+    &--compact {
+      padding: 0;
+    }
+  }
+  &__finger {
+    max-width: 4em;
+  }
+  &__input {
+    font: 600 18px/18px "Laila", serif;
     max-width: 100%;
     box-sizing: border-box;
+    padding-top: $padding-y;
+    padding-bottom: $padding-y;
+    padding-left: $padding-x + $minus-width;
+    padding-right: $padding-x;
+    border: 0;
+    &--negative {
+      padding-left: $padding-x;
+    }
+    &:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 1px $color-primary;
+    }
+  }
+  &__finger-icon {
+    $icon-size: 20px;
+    display: inline-block;
+    width: $icon-size;
+    height: $icon-size;
+    vertical-align: top;
+    color: #ccc;
+    margin-top: -2px;
   }
 }
 </style>
