@@ -1,32 +1,32 @@
 <template>
   <tr>
     <td>
-      <Finger :value="combatant.initiative" :index="index" property="initiative" :min="0" :max="20"></Finger>
+      <Finger :value="combatant.initiative" :id="combatant.id" property="initiative" :min="0" :max="20"></Finger>
     </td>
     <td>{{combatant.name}}</td>
     <td>
-      <Finger :value="combatant.hp" :index="index" property="hp" :min="0" :max="200"></Finger>
+      <Finger :value="combatant.hp" :id="combatant.id" property="hp" :min="0" :max="200"></Finger>
     </td>
     <td>
-      <Finger :value="combatant.ac" :index="index" property="ac" :min="10" :max="30"></Finger>
+      <Finger :value="combatant.ac" :id="combatant.id" property="ac" :min="10" :max="30"></Finger>
     </td>
     <td>
-      <Finger :value="combatant.str" :index="index" property="str" :min="-5" :max="5"></Finger>
+      <Finger :value="combatant.str" :id="combatant.id" property="str" :min="-5" :max="5"></Finger>
     </td>
     <td>
-      <Finger :value="combatant.dex" :index="index" property="dex" :min="-5" :max="5"></Finger>
+      <Finger :value="combatant.dex" :id="combatant.id" property="dex" :min="-5" :max="5"></Finger>
     </td>
     <td>
-      <Finger :value="combatant.con" :index="index" property="con" :min="-5" :max="5"></Finger>
+      <Finger :value="combatant.con" :id="combatant.id" property="con" :min="-5" :max="5"></Finger>
     </td>
     <td>
-      <Finger :value="combatant.int" :index="index" property="int" :min="-5" :max="5"></Finger>
+      <Finger :value="combatant.int" :id="combatant.id" property="int" :min="-5" :max="5"></Finger>
     </td>
     <td>
-      <Finger :value="combatant.wis" :index="index" property="wis" :min="-5" :max="5"></Finger>
+      <Finger :value="combatant.wis" :id="combatant.id" property="wis" :min="-5" :max="5"></Finger>
     </td>
     <td>
-      <Finger :value="combatant.cha" :index="index" property="cha" :min="-5" :max="5"></Finger>
+      <Finger :value="combatant.cha" :id="combatant.id" property="cha" :min="-5" :max="5"></Finger>
     </td>
   </tr>
 </template>
@@ -39,10 +39,6 @@ export default {
   props: {
     combatant: {
       type: Object,
-      required: true
-    },
-    index: {
-      type: Number,
       required: true
     }
   },

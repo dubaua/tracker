@@ -15,24 +15,22 @@
       </tr>
     </thead>
     <tbody>
-      <combatant v-for="(creature, index) in creatures" :key="index" :combatant="creature" :index="index"></combatant>
+      <combatant v-for="combatant in getOrderedByInitiative" :key="combatant.id" :combatant="combatant"></combatant>
     </tbody>
   </table>
 </template>
 
 <script>
 import Combatant from "./Combatant.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Tracker",
-  props: {
-    creatures: {
-      type: Array,
-      required: true
-    }
-  },
   components: {
     Combatant
+  },
+  computed: {
+    ...mapGetters(['getOrderedByInitiative']),
   },
 };
 </script>
