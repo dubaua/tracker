@@ -8,7 +8,7 @@
           v-for="(property, key) in getDefaults"
           :key="'head'+key"
         >
-          {{key}}
+          {{property.label}}
           <div class="tracker__finger-icon">
             <Icon glyph="fingerprint"></Icon>
           </div>

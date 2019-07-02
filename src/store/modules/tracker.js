@@ -6,46 +6,55 @@ const DEFAULTS = {
     initial: 0,
     min: -5,
     max: 20,
+    label: 'Initiative',
   },
   hp: {
     initial: 25,
     min: 1,
     max: 200,
+    label: 'HP',
   },
   ac: {
     initial: 15,
     min: 10,
     max: 30,
+    label: 'AC',
   },
   str: {
     initial: 0,
     min: -5,
     max: 5,
+    label: 'STR',
   },
   dex: {
     initial: 0,
     min: -5,
     max: 5,
+    label: 'DEX',
   },
   con: {
     initial: 0,
     min: -5,
     max: 5,
+    label: 'CON',
   },
   int: {
     initial: 0,
     min: -5,
     max: 5,
+    label: 'INT',
   },
   wis: {
     initial: 0,
     min: -5,
     max: 5,
+    label: 'WIS',
   },
   cha: {
     initial: 0,
     min: -5,
     max: 5,
+    label: 'CHA',
   },
 };
 
