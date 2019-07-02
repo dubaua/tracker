@@ -1,16 +1,20 @@
 <template>
   <DragAdjust class="finger" :value="value" :min="min" :max="max" @input="set($event)">
     <input class="finger__input" :value="value" @change="set($event)">
+    <div class="finger__icon">
+      <Icon glyph="fingerprint" :width="24" :height="24"></Icon>
+    </div>
   </DragAdjust>
 </template>
 
 <script>
 import DragAdjust from "./DragAdjust.vue";
+import Icon from "./Icon.vue";
 import { mapMutations } from "vuex";
 
 export default {
   name: "Finger",
-  components: { DragAdjust },
+  components: { DragAdjust, Icon },
   props: {
     id: {
       type: String,
@@ -56,6 +60,15 @@ export default {
     box-sizing: border-box;
     position: relative;
     z-index: 0;
+  }
+  &__icon {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 0;
+    top: 0;
+    color: #ccc;
+    z-index: 1;
   }
 }
 </style>
